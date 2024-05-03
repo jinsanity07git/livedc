@@ -1,0 +1,7 @@
+nodespecs>=0.0.14
+
+[dev]
+GPUtil
+pip-tools
+psutil>=5.9.5
+toml
