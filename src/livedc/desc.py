@@ -21,6 +21,9 @@ def add_rdoc(func):
             # rdoc_sections.append(Markdown(section[3:]) )
             pass
         else:
+            # backslah handler for latex symbol in string
+            if "\x0crac" in section:
+                section = section.replace("\x0crac","\\frac")
             rdoc_sections.append(Markdown(section.lstrip()))
     # func.__rdoc__ = "\n".join([str(section) for section in rdoc_sections])
     func.__rdoc__ = rdoc_sections

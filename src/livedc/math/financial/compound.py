@@ -29,6 +29,9 @@ def plot_Euler():
 @add_rdoc
 def compound_interest(r=0.1, P=100,n=12,t=1):
   """
+
+   $$ A = P(1 + \frac{r}{n})^{nt} $$
+  
   Calculate the compound interest.
   - A	=	final amount || 终值
   - P	=	initial principal balance || 现值
@@ -36,8 +39,12 @@ def compound_interest(r=0.1, P=100,n=12,t=1):
   - n	=	number of times interest applied per time period || 期数
   - t	=	number of time periods elapsed || （年数)
   
+
   Returns:
     The final amount after applying compound interest.
+  
+  Ref
+  - [Compound Interest Calculator](https://www.calculatorsoup.com/calculators/financial/compound-interest-calculator.php)
   """
   A = P*(1+ r/n)**(n*t)
   # print (A)
