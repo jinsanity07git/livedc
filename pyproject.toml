@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "livedc"
-version = "0.0.1"
+version = "0.0.2"
 description = "Useful mathmatical models/caculators for daily life and cloud deployment"
 readme = "README.md"
 classifiers = [ "License :: OSI Approved :: MIT License", "Programming Language :: Python", "Programming Language :: Python :: 3",]

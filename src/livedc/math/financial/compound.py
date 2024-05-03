@@ -10,6 +10,7 @@ https://qwtel.com/posts/finance/continuously-compounding-interest/
 """
 
 import pandas as pd
+from ...desc import add_rdoc
 ### 自然对是的底 -- e
 
 
@@ -25,6 +26,7 @@ def plot_Euler():
   df.plot(x="x",y="y",kind="line")
 
 
+@add_rdoc
 def compound_interest(r=0.1, P=100,n=12,t=1):
   """
   Calculate the compound interest.

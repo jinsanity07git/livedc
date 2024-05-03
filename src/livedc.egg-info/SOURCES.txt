@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 setup.py
 src/livedc/__init__.py
+src/livedc/desc.py
 src/livedc.egg-info/PKG-INFO
 src/livedc.egg-info/SOURCES.txt
 src/livedc.egg-info/dependency_links.txt
