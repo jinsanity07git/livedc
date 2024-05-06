@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
-from specs.hardware import ensure_lib
+from specs.hardware import ensure_libs
 # tdm23.0.1\tdm23\code\model\tdmpy\wkfhm.py
 # pyomo==6.2
+# require a different python version: 6.2 Requires-Python >=3.6, <3.10
 
 class BalanceOR:
-    @ensure_lib("pyomo")
+    @ensure_libs(["pyomo==6.7.1","cplex"])
     def __init__(self) -> None:
         self.data = {None: {'I': {None: [1, 2, 3, 4, 5]}, 'J': {None: [1, 2, 3, 4, 5, 6]}, 'TR': {1: 106828.0, 2: 1941683.2000000002, 3: 632529.7999999999, 4: 1017832.7999999999, 5: 337461.30000000005}, 'TC': {1: 1235366.6, 2: 1078563.5999999999, 3: 598312.7999999999, 4: 144637.5, 5: 199700.0, 6: 410838.0}, 'Tau': {(1, 1): 24109.1, (1, 2): 31439.3, (1, 3): 20953.2, (1, 4): 13092.9, (1, 5): 5238.3, (1, 6): 6653.799999999999, (2, 1): 789153.6, (2, 2): 785936.8999999999, (2, 3): 391322.1, (2, 4): 201033.3, (2, 5): 61605.6, (2,6): 76697.3, (3, 1): 281941.0, (3, 2): 261481.8, (3, 3): 152862.6, (3, 4): 90008.7, (3, 5): 31036.5, (3, 6): 41102.7, (4, 1): 514869.6, (4, 2): 457803.1, (4, 3): 280282.3, (4, 4): 184987.8, (4, 5): 69274.0, (4, 6): 104351.79999999999, (5, 1): 195462.5, (5, 2): 171064.6, (5, 3): 101908.4, (5, 4): 60499.799999999996, (5, 5): 22560.6, (5, 6): 31391.8}}}
         # Model coeff
@@ -19,7 +20,14 @@ class BalanceOR:
 
 
     def createModel(self):
-        from pyomo.environ import *
+        from pyomo.environ import (AbstractModel,
+                                   Set,
+                                   Param,
+                                   Var,
+                                   Constraint,
+                                   Objective,
+                                   minimize
+                                   )
         import pyomo.kernel as pmo
         
 
@@ -121,13 +129,17 @@ class BalanceOR:
 
         model.total_cost_Objective = Objective(rule=total_cost, sense=minimize)
 
+        print (self.data)
+
         self.FB_model = model.create_instance(self.data)
     
     def solve(self,wfh_summ="wfh_summary.csv",logger="logger"):
         """    Solve and print
         """
-        from pyomo.opt import SolverStatus, TerminationCondition
-
+        from pyomo.opt import (SolverFactory,
+                               SolverStatus, 
+                               TerminationCondition
+                              )
         opt = SolverFactory('cplex',solver_io="python",validate=False,tee =False)
 
         # logger.debug(self.FB_model.pprint() )
@@ -196,5 +208,6 @@ class BalanceOR:
 if __name__ == "__main__":
 
 
-    wfh = work_from_home()
-    wfh.worker_eqs()
+    bal = BalanceOR()
+    bal.createModel()
+    bal.solve()
