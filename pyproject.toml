@@ -19,7 +19,7 @@ email = "jinsanityff@gmail.com"
 file = "LICENSE"
 
 [project.optional-dependencies]
-dev = [ "GPUtil", "pip-tools", "psutil >= 5.9.5", "toml",]
+dev = [ "GPUtil", "pip-tools", "psutil >= 5.9.5", "toml","pyomo==6.2"]
 
 [project.urls]
 Homepage = "https://github.com/jinsanity07git/livedc"
