@@ -4,11 +4,59 @@ from specs.hardware import ensure_libs
 # tdm23.0.1\tdm23\code\model\tdmpy\wkfhm.py
 # pyomo==6.2
 # require a different python version: 6.2 Requires-Python >=3.6, <3.10
+import logging
+import os
+
+
 
 class BalanceOR:
     @ensure_libs(["pyomo==6.7.1","cplex"])
     def __init__(self) -> None:
-        self.data = {None: {'I': {None: [1, 2, 3, 4, 5]}, 'J': {None: [1, 2, 3, 4, 5, 6]}, 'TR': {1: 106828.0, 2: 1941683.2000000002, 3: 632529.7999999999, 4: 1017832.7999999999, 5: 337461.30000000005}, 'TC': {1: 1235366.6, 2: 1078563.5999999999, 3: 598312.7999999999, 4: 144637.5, 5: 199700.0, 6: 410838.0}, 'Tau': {(1, 1): 24109.1, (1, 2): 31439.3, (1, 3): 20953.2, (1, 4): 13092.9, (1, 5): 5238.3, (1, 6): 6653.799999999999, (2, 1): 789153.6, (2, 2): 785936.8999999999, (2, 3): 391322.1, (2, 4): 201033.3, (2, 5): 61605.6, (2,6): 76697.3, (3, 1): 281941.0, (3, 2): 261481.8, (3, 3): 152862.6, (3, 4): 90008.7, (3, 5): 31036.5, (3, 6): 41102.7, (4, 1): 514869.6, (4, 2): 457803.1, (4, 3): 280282.3, (4, 4): 184987.8, (4, 5): 69274.0, (4, 6): 104351.79999999999, (5, 1): 195462.5, (5, 2): 171064.6, (5, 3): 101908.4, (5, 4): 60499.799999999996, (5, 5): 22560.6, (5, 6): 31391.8}}}
+        self.data = {None: {'I': {None: [1, 2, 3, 4, 5, 6]},
+                        'J': {None: [1, 2, 3, 4, 5, 6]},
+                        'TR': {1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0},
+                        'TC': {1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0},
+                        'AT': {1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0},
+                        'rho': {1: 0.2, 2: 0.3, 3: 0.6, 4: 0.6, 5: 0.7, 6: 0.7},
+                        'tau': {1: 1759937, 2: 1488121, 3: 907115, 4: 227444, 5: 112550, 6: 219481},
+                        'ttr': {None: 0},
+                        'gama': {(1, 1): 6499.8,
+                                 (1, 2): 6407.4,
+                                 (1, 3): 4945.2,
+                                 (1, 4): 1431.0,
+                                 (1, 5): 714.6,
+                                 (1, 6): 1765.8,
+                                 (2, 1): 103813.2,
+                                 (2, 2): 86193.0,
+                                 (2, 3): 51919.2,
+                                 (2, 4): 12454.8,
+                                 (2, 5): 6301.8,
+                                 (2, 6): 14059.199999999999,
+                                 (3, 1): 217023.6,
+                                 (3, 2): 154393.8,
+                                 (3, 3): 85684.8,
+                                 (3, 4): 20428.2,
+                                 (3, 5): 9643.199999999999,
+                                 (3, 6): 19753.8,
+                                 (4, 1): 117310.2,
+                                 (4, 2): 93483.59999999999,
+                                 (4, 3): 54950.4,
+                                 (4, 4): 13647.6,
+                                 (4, 5): 6755.4,
+                                 (4, 6): 14549.4,
+                                 (5, 1): 235798.19999999998,
+                                 (5, 2): 202938.0,
+                                 (5, 3): 130617.0,
+                                 (5, 4): 34707.0,
+                                 (5, 5): 17016.6,
+                                 (5, 6): 33037.2,
+                                 (6, 1): 375517.2,
+                                 (6, 2): 349456.8,
+                                 (6, 3): 216152.4,
+                                 (6, 4): 53797.799999999996,
+                                 (6, 5): 27098.399999999998,
+                                 (6, 6): 48523.2}}}
+
         # Model coeff
         self.deltafct_R = 0.01
         self.deltafct_C = 0.01
@@ -17,8 +65,31 @@ class BalanceOR:
         self.prop_row  = 0.1
         self.Tlimit = 5
 
+        self.log_level = "DEBUG"
+        self.logfile = self.init_logger()
+        self.logger = self.add_logger()
 
 
+    def init_logger(self):
+        LOG_FILE = "bal.log"
+        if os.path.exists(LOG_FILE):
+            os.remove(LOG_FILE)
+        else:
+            pass
+        return LOG_FILE
+
+        
+
+    def add_logger(self,name = "__name__"):
+        LOG_FILE = self.logfile
+        logger = logging.getLogger(name)
+        FORMATTER = logging.Formatter("%(asctime)s * %(levelname)8s * %(module)15s * %(funcName)20s * %(message)s")
+        file_handler = logging.FileHandler(LOG_FILE,mode='a')
+        file_handler.setFormatter(FORMATTER)
+        logger.addHandler(file_handler)
+        logger.setLevel(self.log_level)
+        return logger
+    
     def createModel(self):
         from pyomo.environ import (AbstractModel,
                                    Set,
@@ -129,8 +200,6 @@ class BalanceOR:
 
         model.total_cost_Objective = Objective(rule=total_cost, sense=minimize)
 
-        print (self.data)
-
         self.FB_model = model.create_instance(self.data)
     
     def solve(self,wfh_summ="wfh_summary.csv",logger="logger"):
@@ -210,4 +279,4 @@ if __name__ == "__main__":
 
     bal = BalanceOR()
     bal.createModel()
-    bal.solve()
+    bal.solve(logger=bal.logger)
