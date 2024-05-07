@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: livedc
-Version: 0.0.3
+Version: 0.0.4
 Summary: Useful mathmatical models/caculators for daily life and cloud deployment
 Author-email: jinsanity <jinsanityff@gmail.com>
 License: MIT License
@@ -33,12 +33,13 @@ Classifier: Programming Language :: Python :: 3
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: nodespecs>=0.0.14
+Requires-Dist: nodespecs>=0.0.15
 Provides-Extra: dev
 Requires-Dist: GPUtil; extra == "dev"
 Requires-Dist: pip-tools; extra == "dev"
 Requires-Dist: psutil>=5.9.5; extra == "dev"
 Requires-Dist: toml; extra == "dev"
+Requires-Dist: pyomo==6.2; extra == "dev"
 
 # livedc
  useful mathmatical models/caculators for daily life and cloud deployment

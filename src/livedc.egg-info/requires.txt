@@ -1,7 +1,8 @@
-nodespecs>=0.0.14
+nodespecs>=0.0.15
 
 [dev]
 GPUtil
 pip-tools
 psutil>=5.9.5
 toml
+pyomo==6.2
