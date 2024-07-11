@@ -11,3 +11,4 @@ src/livedc.egg-info/entry_points.txt
 src/livedc.egg-info/requires.txt
 src/livedc.egg-info/top_level.txt
 src/livedc/math/financial/compound.py
+src/livedc/math/game/nash.py
