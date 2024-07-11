@@ -46,5 +46,9 @@ def sbs( iter ):
     for df in iter:
         if isinstance(df, pd.Series):
             df = pd.DataFrame(df)
-        ls.append(  HTML(df.to_html())  )
+            ls.append(  HTML(df.to_html())  )
+        elif f"{type(df)}" == "<class 'statsmodels.iolib.table.SimpleTable'>":
+            ls.append(  HTML(df.as_html())  )
+        elif isinstance(df, str):
+            ls.append( HTML(df) )
     return (HBox(ls))
