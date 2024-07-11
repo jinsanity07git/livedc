@@ -10,5 +10,15 @@ src/livedc.egg-info/dependency_links.txt
 src/livedc.egg-info/entry_points.txt
 src/livedc.egg-info/requires.txt
 src/livedc.egg-info/top_level.txt
+src/livedc/calendar/JetLag_datecount.py
+src/livedc/calendar/__init__.py
+src/livedc/calendar/cntdate.py
+src/livedc/math/__init__.py
+src/livedc/math/financial/__init__.py
 src/livedc/math/financial/compound.py
+src/livedc/math/game/__init__.py
 src/livedc/math/game/nash.py
+src/livedc/math/or/__init__.py
+src/livedc/math/or/diet2.py
+src/livedc/math/or/example.py
+src/livedc/math/or/lp.py
