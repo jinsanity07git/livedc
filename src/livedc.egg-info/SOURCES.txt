@@ -22,3 +22,5 @@ src/livedc/math/or/__init__.py
 src/livedc/math/or/diet2.py
 src/livedc/math/or/example.py
 src/livedc/math/or/lp.py
+src/livedc/vr/tdm23.vr
+src/livedc/vr/tdm23.vr.pkl
