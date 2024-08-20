@@ -5,6 +5,8 @@ prefix = os.path.dirname(__file__)
 url_vrpkl = os.path.join( prefix,  'vr/tdm23.vr.pkl') 
 url_vrlib   = os.path.join( prefix,  'vr/tdm23.vr') 
 """
+!pip install livedc
+from livedc import url_vrpkl,url_vrlib
 import pickle
 with open(url_vrpkl, "rb") as f:
     prereq = pickle.load(f)
