@@ -3,6 +3,7 @@ from specs.hardware import ensure_libs
 import os
 import time
 from PIL import Image
+import subprocess
 """
 webdriver_manager-4.0.2
 """
@@ -48,6 +49,22 @@ def render_html_to_pdf(html_path, output_path):
         driver.quit()
         os.remove("temp_rendered.html")  # Clean up the temporary file
 
+
+packages = [
+    "fonts-indic",
+    "fonts-noto",
+    "fonts-noto-cjk"
+]
+
+# Define the command to check if a package is installed
+def is_package_installed(package):
+    result = subprocess.run(f"dpkg -s {package}", shell=True, capture_output=True, text=True)
+    return result.returncode == 0
+
+# Define the command to install a package
+def install_unix_package(package):
+    subprocess.run(f"apt-get install {package}", shell=True)
+
 @ensure_libs(["selenium == 4.22.0",
               "webdriver_manager==4.0.2"])
 def render_html_to_png(html_path, output_path,wsize=(1800, 1080)):
@@ -64,6 +81,13 @@ def render_html_to_png(html_path, output_path,wsize=(1800, 1080)):
         service = ChromeService(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
     else:
+        # Check and install packages
+        for package in packages:
+            if not is_package_installed(package):
+                print(f"{package} is not installed. Installing...")
+                install_unix_package(package)
+            else:
+                print(f"{package} is already installed.")
         # https://github.com/googlecolab/colabtools/issues/3347
         driver = webdriver.Chrome(options=options)
     
@@ -73,7 +97,10 @@ def render_html_to_png(html_path, output_path,wsize=(1800, 1080)):
         # Set mobile screen size
         # driver.set_window_size(390, 844)
         # Open the HTML file
-        driver.get(f"file://{html_path}")
+        if "http" in html_path:
+            driver.get(html_path)
+        else:    
+            driver.get(f"file://{html_path}")
         # URL = "https://ctps.org/pub/tdm23_sc/tdm23.1.0/x_va.html"
         # driver.get(URL)
         

@@ -17,4 +17,4 @@ tdmvr, installed_packages = prereq.env(furl=url_vrlib)
 python -c "import livedc"
 """
 
-__version__ = "0.0.13"
+__version__ = "0.0.15"
