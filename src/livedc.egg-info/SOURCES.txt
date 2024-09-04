@@ -13,6 +13,8 @@ src/livedc.egg-info/top_level.txt
 src/livedc/calendar/JetLag_datecount.py
 src/livedc/calendar/__init__.py
 src/livedc/calendar/cntdate.py
+src/livedc/format/__init__.py
+src/livedc/format/html2pdf.py
 src/livedc/math/__init__.py
 src/livedc/math/financial/__init__.py
 src/livedc/math/financial/compound.py

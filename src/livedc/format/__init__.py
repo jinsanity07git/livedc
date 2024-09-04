@@ -1,0 +1,1 @@
+from .html2pdf import render_html_to_png

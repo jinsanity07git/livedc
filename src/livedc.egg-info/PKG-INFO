@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: livedc
-Version: 0.0.10
+Version: 0.0.12
 Summary: Useful mathmatical models/caculators for daily life and cloud deployment
 Author-email: jinsanity <jinsanityff@gmail.com>
 License: MIT License
@@ -43,3 +43,13 @@ Requires-Dist: pyomo==6.2; extra == "dev"
 
 # livedc
  useful mathmatical models/caculators for daily life and cloud deployment
+
+tdm23_vr setup for colab
+```shell
+!pip install livedc
+from livedc import url_vrpkl,url_vrlib
+import pickle
+with open(url_vrpkl, "rb") as f:
+    prereq = pickle.load(f)
+tdmvr, installed_packages = prereq.env(furl=url_vrlib)
+```
