@@ -1,3 +1,4 @@
+import specs
 from specs.hardware import ensure_libs
 import os
 import time
@@ -54,12 +55,17 @@ def render_html_to_png(html_path, output_path,wsize=(1800, 1080)):
     from selenium.webdriver.chrome.service import Service as ChromeService
     from webdriver_manager.chrome import ChromeDriverManager
     # Initialize the Chrome driver
-    service = ChromeService(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')  # Run in headless mode
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome(service=service, options=options)
+    page_title = specs.environment_check()
+    if page_title != "GoogleColabShell":
+        service = ChromeService(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
+    else:
+        # https://github.com/googlecolab/colabtools/issues/3347
+        driver = webdriver.Chrome(options=options)
     
     try:
         # Set browser window size
@@ -68,6 +74,8 @@ def render_html_to_png(html_path, output_path,wsize=(1800, 1080)):
         # driver.set_window_size(390, 844)
         # Open the HTML file
         driver.get(f"file://{html_path}")
+        # URL = "https://ctps.org/pub/tdm23_sc/tdm23.1.0/x_va.html"
+        # driver.get(URL)
         
         # Wait for the page to render completely
         time.sleep(5)  # Adjust time if necessary
@@ -99,7 +107,6 @@ def render_html_to_png(html_path, output_path,wsize=(1800, 1080)):
         
     finally:
         driver.quit()
-
 if __name__ == "__main__":
     html_path   = "./html/day2_doc_7.html" 
     output_path = "./html/day2_c1s1.png"  
